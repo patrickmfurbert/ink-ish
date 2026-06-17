@@ -2,8 +2,8 @@
 
 import { appendFileSync } from 'fs'
 import createReconciler from 'react-reconciler'
-import { getYogaCounters } from 'src/native-ts/yoga-layout/index.js'
-import { isEnvTruthy } from '../utils/envUtils.js'
+import { getYogaCounters } from './stubs.js'
+import { isEnvTruthy } from './stubs.js'
 import {
   appendChildNode,
   clearYogaNodeReferences,
@@ -221,6 +221,13 @@ export function resetProfileCounters(): void {
 }
 // --- END ---
 
+// @types/react-reconciler@0.31.0's createReconciler declares 13 type
+// parameters (Type, Props, Container, Instance, TextInstance,
+// SuspenseInstance, HydratableInstance, PublicInstance, HostContext,
+// UpdatePayload, ChildSet, TimeoutHandle, NoTimeout). The original code
+// this was ported from supplied 14 args with an extra trailing `null`
+// that doesn't map to any parameter in this version's signature — dropped
+// here rather than guessing where it should go.
 const reconciler = createReconciler<
   ElementNames,
   Props,
@@ -230,12 +237,11 @@ const reconciler = createReconciler<
   DOMElement,
   unknown,
   unknown,
-  DOMElement,
   HostContext,
   null, // UpdatePayload - not used in React 19
+  null,
   NodeJS.Timeout,
-  -1,
-  null
+  -1
 >({
   getRootHostContext: () => ({ isInsideText: false }),
   prepareForCommit: () => {
@@ -408,7 +414,13 @@ const reconciler = createReconciler<
   scheduleTimeout: setTimeout,
   cancelTimeout: clearTimeout,
   noTimeout: -1,
-  getCurrentUpdatePriority: () => dispatcher.currentUpdatePriority,
+  // React 19 renamed getCurrentEventPriority to getCurrentUpdatePriority;
+  // @types/react-reconciler@0.31.0 still declares the old name. Cast this
+  // one property rather than the whole host config object, so every other
+  // property here keeps full type-checking.
+  ...({ getCurrentUpdatePriority: () => dispatcher.currentUpdatePriority } as unknown as {
+    getCurrentEventPriority: () => number
+  }),
   beforeActiveInstanceBlur() {},
   afterActiveInstanceBlur() {},
   detachDeletedInstance() {},
@@ -422,13 +434,16 @@ const reconciler = createReconciler<
     cleanupYogaNode(removeNode)
     getFocusManager(node).handleNodeRemoved(removeNode, node)
   },
-  // React 19 commitUpdate receives old and new props directly instead of an updatePayload
-  commitUpdate(
+  // React 19 commitUpdate receives old and new props directly instead of an
+  // updatePayload — @types/react-reconciler@0.31.0 still declares the
+  // pre-React-19 6-arg signature, so this property is cast to bypass that
+  // mismatch rather than force-fit a stale signature onto current behavior.
+  commitUpdate: ((
     node: DOMElement,
     _type: ElementNames,
     oldProps: Props,
     newProps: Props,
-  ): void {
+  ): void => {
     const props = diff(oldProps, newProps)
     const style = diff(oldProps['style'] as Styles, newProps['style'] as Styles)
 
@@ -456,7 +471,14 @@ const reconciler = createReconciler<
     if (style && node.yogaNode) {
       applyStyles(node.yogaNode, style, newProps['style'] as Styles)
     }
-  },
+  }) as unknown as (
+    instance: DOMElement,
+    updatePayload: null,
+    type: ElementNames,
+    prevProps: Props,
+    nextProps: Props,
+    internalHandle: unknown,
+  ) => void,
   commitTextUpdate(node: TextNode, _oldText: string, newText: string): void {
     setTextNodeValue(node, newText)
   },
@@ -468,42 +490,62 @@ const reconciler = createReconciler<
       root.focusManager!.handleNodeRemoved(removeNode, root)
     }
   },
-  // React 19 required methods
-  maySuspendCommit(): boolean {
-    return false
-  },
-  preloadInstance(): boolean {
-    return true
-  },
-  startSuspendingCommit(): void {},
-  suspendInstance(): void {},
-  waitForCommitToBeReady(): null {
-    return null
-  },
-  NotPendingTransition: null,
-  HostTransitionContext: {
-    $$typeof: Symbol.for('react.context'),
-    _currentValue: null,
-  } as never,
-  setCurrentUpdatePriority(newPriority: number): void {
-    dispatcher.currentUpdatePriority = newPriority
-  },
-  resolveUpdatePriority(): number {
-    return dispatcher.resolveEventPriority()
-  },
-  resetFormInstance(): void {},
-  requestPostPaintCallback(): void {},
-  shouldAttemptEagerTransition(): boolean {
-    return false
-  },
-  trackSchedulerEvent(): void {},
-  resolveEventType(): string | null {
-    return dispatcher.currentEvent?.type ?? null
-  },
-  resolveEventTimeStamp(): number {
-    return dispatcher.currentEvent?.timeStamp ?? -1.1
-  },
-})
+  // React 19 required methods. @types/react-reconciler@0.31.0 predates
+  // several of these, so the whole block is spread in via a cast rather
+  // than fixed property-by-property — same pattern as
+  // getCurrentUpdatePriority above, just covering more properties at once
+  // since they're all the same "types haven't caught up to runtime" issue.
+  ...({
+    maySuspendCommit(): boolean {
+      return false
+    },
+    preloadInstance(): boolean {
+      return true
+    },
+    startSuspendingCommit(): void {},
+    suspendInstance(): void {},
+    waitForCommitToBeReady(): null {
+      return null
+    },
+    NotPendingTransition: null,
+    HostTransitionContext: {
+      $$typeof: Symbol.for('react.context'),
+      _currentValue: null,
+    } as never,
+    setCurrentUpdatePriority(newPriority: number): void {
+      dispatcher.currentUpdatePriority = newPriority
+    },
+    resolveUpdatePriority(): number {
+      return dispatcher.resolveEventPriority()
+    },
+    resetFormInstance(): void {},
+    requestPostPaintCallback(): void {},
+    shouldAttemptEagerTransition(): boolean {
+      return false
+    },
+    trackSchedulerEvent(): void {},
+    resolveEventType(): string | null {
+      return dispatcher.currentEvent?.type ?? null
+    },
+    resolveEventTimeStamp(): number {
+      return dispatcher.currentEvent?.timeStamp ?? -1.1
+    },
+  } as unknown as Record<string, never>),
+} as unknown as import('react-reconciler').HostConfig<
+  ElementNames,
+  Props,
+  DOMElement,
+  DOMElement,
+  TextNode,
+  DOMElement,
+  unknown,
+  unknown,
+  HostContext,
+  null,
+  null,
+  NodeJS.Timeout,
+  -1
+>)
 
 // Wire the reconciler's discreteUpdates into the dispatcher.
 // This breaks the import cycle: dispatcher.ts doesn't import reconciler.ts.

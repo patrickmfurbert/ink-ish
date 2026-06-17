@@ -6,10 +6,7 @@ import React, { type ReactNode } from 'react';
 import type { FiberRoot } from 'react-reconciler';
 import { ConcurrentRoot } from 'react-reconciler/constants.js';
 import { onExit } from 'signal-exit';
-import { flushInteractionTime } from 'src/bootstrap/state.js';
-import { getYogaCounters } from 'src/native-ts/yoga-layout/index.js';
-import { logForDebugging } from 'src/utils/debug.js';
-import { logError } from 'src/utils/log.js';
+import { flushInteractionTime, getYogaCounters, logForDebugging, logError } from './stubs.js';
 import { format } from 'util';
 import { colorize } from './colorize.js';
 import App from './components/App.js';
@@ -257,17 +254,26 @@ export default class Ink {
       }
     };
 
-    // @ts-expect-error @types/react-reconciler@0.32.3 declares 11 args with transitionCallbacks,
-    // but react-reconciler 0.33.0 source only accepts 10 args (no transitionCallbacks)
-    this.container = reconciler.createContainer(this.rootNode, ConcurrentRoot, null, false, null, 'id', noop,
-    // onUncaughtError
-    noop,
-    // onCaughtError
-    noop,
-    // onRecoverableError
-    noop // onDefaultTransitionIndicator
+    // @types/react-reconciler's createContainer signature varies across
+    // versions in ways that don't always match the installed runtime
+    // (this caused stale @ts-expect-error comments upstream too — the
+    // exact arg count here depends on which react-reconciler version is
+    // resolved). Cast to bypass type-checking this call rather than
+    // chase version-specific signatures.
+    this.container = (reconciler.createContainer as (...args: unknown[]) => typeof this.container)(
+      this.rootNode, ConcurrentRoot, null, false, null, 'id', noop,
+      // onUncaughtError
+      noop,
+      // onCaughtError
+      noop,
+      // onRecoverableError
+      noop // onDefaultTransitionIndicator
     );
-    if ("production" === 'development') {
+    // Originally process.env.NODE_ENV === 'development' before this got
+    // build-time-inlined to the literal "production" in the source export
+    // this package was built from (making the branch permanently dead).
+    // Restored to a real runtime check.
+    if (process.env.NODE_ENV === 'development') {
       reconciler.injectIntoDevTools({
         bundleType: 0,
         // Reporting React DOM's version, not Ink's

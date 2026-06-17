@@ -3,8 +3,7 @@
  */
 
 import { Buffer } from 'buffer'
-import { env } from '../../utils/env.js'
-import { execFileNoThrow } from '../../utils/execFileNoThrow.js'
+import { env, execFileNoThrow } from '../stubs.js'
 import { BEL, ESC, ESC_TYPE, SEP } from './ansi.js'
 import type { Action, Color, TabStatusAction } from './types.js'
 

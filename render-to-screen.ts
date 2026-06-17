@@ -1,7 +1,7 @@
 import noop from 'lodash-es/noop.js'
 import type { ReactElement } from 'react'
 import { LegacyRoot } from 'react-reconciler/constants.js'
-import { logForDebugging } from '../utils/debug.js'
+import { logForDebugging } from './stubs.js'
 import { createNode, type DOMElement } from './dom.js'
 import { FocusManager } from './focus.js'
 import Output from './output.js'
@@ -66,8 +66,9 @@ export function renderToScreen(
     stylePool = new StylePool()
     charPool = new CharPool()
     hyperlinkPool = new HyperlinkPool()
-    // @ts-expect-error react-reconciler 0.33 takes 10 args; @types says 11
-    container = reconciler.createContainer(
+    // @types/react-reconciler's createContainer signature varies across
+    // versions in ways that don't always match the installed runtime.
+    container = (reconciler.createContainer as (...args: unknown[]) => typeof container)(
       root,
       LegacyRoot,
       null,

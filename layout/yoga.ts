@@ -1,4 +1,4 @@
-import Yoga, {
+import {
   Align,
   Direction,
   Display,
@@ -11,7 +11,8 @@ import Yoga, {
   PositionType,
   Wrap,
   type Node as YogaNode,
-} from 'src/native-ts/yoga-layout/index.js'
+} from 'yoga-layout'
+import { loadYoga } from 'yoga-layout/load'
 import {
   type LayoutAlign,
   LayoutDisplay,
@@ -26,6 +27,13 @@ import {
   type LayoutPositionType,
   type LayoutWrap,
 } from './node.js'
+
+// Standard yoga-layout ships as WASM and needs an async load step, unlike
+// Claude Code's original TS-native port which was synchronous. We pay that
+// async cost exactly once at module load via top-level await, so every
+// other call site in this codebase (which expects createYogaLayoutNode to
+// be synchronous) keeps working unmodified.
+const Yoga = await loadYoga()
 
 // --
 // Edge/Gutter mapping
