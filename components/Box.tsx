@@ -66,7 +66,7 @@ function Box(t0: Props): React.ReactNode {
   let onMouseEnter;
   let onMouseLeave;
   let ref;
-  let style;
+  let style: Styles;
   let tabIndex;
   if ($[0] !== t0) {
     const {

@@ -24,7 +24,7 @@ export function TerminalFocusProvider(t0: { children?: React.ReactNode }): React
   } = t0;
   const isTerminalFocused = useSyncExternalStore(subscribeTerminalFocus, getTerminalFocused);
   const terminalFocusState = useSyncExternalStore(subscribeTerminalFocus, getTerminalFocusState);
-  let t1;
+  let t1: TerminalFocusContextProps;
   if ($[0] !== isTerminalFocused || $[1] !== terminalFocusState) {
     t1 = {
       isTerminalFocused,
@@ -34,7 +34,7 @@ export function TerminalFocusProvider(t0: { children?: React.ReactNode }): React
     $[1] = terminalFocusState;
     $[2] = t1;
   } else {
-    t1 = $[2];
+    t1 = $[2] as TerminalFocusContextProps;
   }
   const value = t1;
   let t2;

@@ -133,7 +133,7 @@ export default function Text(t0: Props): React.ReactNode {
   if (children === undefined || children === null) {
     return null;
   }
-  let t6;
+  let t6: false | { color: typeof color };
   if ($[0] !== color) {
     t6 = color && {
       color
@@ -141,9 +141,9 @@ export default function Text(t0: Props): React.ReactNode {
     $[0] = color;
     $[1] = t6;
   } else {
-    t6 = $[1];
+    t6 = $[1] as false | { color: typeof color };
   }
-  let t7;
+  let t7: false | { backgroundColor: typeof backgroundColor };
   if ($[2] !== backgroundColor) {
     t7 = backgroundColor && {
       backgroundColor
@@ -151,9 +151,9 @@ export default function Text(t0: Props): React.ReactNode {
     $[2] = backgroundColor;
     $[3] = t7;
   } else {
-    t7 = $[3];
+    t7 = $[3] as false | { backgroundColor: typeof backgroundColor };
   }
-  let t8;
+  let t8: false | { dim: typeof dim };
   if ($[4] !== dim) {
     t8 = dim && {
       dim
@@ -161,9 +161,9 @@ export default function Text(t0: Props): React.ReactNode {
     $[4] = dim;
     $[5] = t8;
   } else {
-    t8 = $[5];
+    t8 = $[5] as false | { dim: typeof dim };
   }
-  let t9;
+  let t9: false | { bold: typeof bold };
   if ($[6] !== bold) {
     t9 = bold && {
       bold
@@ -171,9 +171,9 @@ export default function Text(t0: Props): React.ReactNode {
     $[6] = bold;
     $[7] = t9;
   } else {
-    t9 = $[7];
+    t9 = $[7] as false | { bold: typeof bold };
   }
-  let t10;
+  let t10: false | { italic: typeof italic };
   if ($[8] !== italic) {
     t10 = italic && {
       italic
@@ -181,9 +181,9 @@ export default function Text(t0: Props): React.ReactNode {
     $[8] = italic;
     $[9] = t10;
   } else {
-    t10 = $[9];
+    t10 = $[9] as false | { italic: typeof italic };
   }
-  let t11;
+  let t11: false | { underline: typeof underline };
   if ($[10] !== underline) {
     t11 = underline && {
       underline
@@ -191,9 +191,9 @@ export default function Text(t0: Props): React.ReactNode {
     $[10] = underline;
     $[11] = t11;
   } else {
-    t11 = $[11];
+    t11 = $[11] as false | { underline: typeof underline };
   }
-  let t12;
+  let t12: false | { strikethrough: typeof strikethrough };
   if ($[12] !== strikethrough) {
     t12 = strikethrough && {
       strikethrough
@@ -201,9 +201,9 @@ export default function Text(t0: Props): React.ReactNode {
     $[12] = strikethrough;
     $[13] = t12;
   } else {
-    t12 = $[13];
+    t12 = $[13] as false | { strikethrough: typeof strikethrough };
   }
-  let t13;
+  let t13: false | { inverse: typeof inverse };
   if ($[14] !== inverse) {
     t13 = inverse && {
       inverse
@@ -211,7 +211,7 @@ export default function Text(t0: Props): React.ReactNode {
     $[14] = inverse;
     $[15] = t13;
   } else {
-    t13 = $[15];
+    t13 = $[15] as false | { inverse: typeof inverse };
   }
   let t14;
   if ($[16] !== t10 || $[17] !== t11 || $[18] !== t12 || $[19] !== t13 || $[20] !== t6 || $[21] !== t7 || $[22] !== t8 || $[23] !== t9) {
