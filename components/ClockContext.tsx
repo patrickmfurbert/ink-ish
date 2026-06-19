@@ -72,15 +72,15 @@ const BLURRED_TICK_INTERVAL_MS = FRAME_INTERVAL_MS * 2;
 // Own component so App.tsx doesn't re-render when the clock is created.
 // The clock value is stable (created once via useState), so the provider
 // never causes consumer re-renders on its own.
-export function ClockProvider(t0) {
+export function ClockProvider(t0: { children?: React.ReactNode }): React.ReactNode {
   const $ = _c(7);
   const {
     children
   } = t0;
   const [clock] = useState(_temp);
   const focused = useTerminalFocus();
-  let t1;
-  let t2;
+  let t1: () => void;
+  let t2: unknown[];
   if ($[0] !== clock || $[1] !== focused) {
     t1 = () => {
       clock.setTickInterval(focused ? FRAME_INTERVAL_MS : BLURRED_TICK_INTERVAL_MS);
@@ -91,8 +91,8 @@ export function ClockProvider(t0) {
     $[2] = t1;
     $[3] = t2;
   } else {
-    t1 = $[2];
-    t2 = $[3];
+    t1 = $[2] as () => void;
+    t2 = $[3] as unknown[];
   }
   useEffect(t1, t2);
   let t3;

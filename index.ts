@@ -1,3 +1,5 @@
+/// <reference path="./global.d.ts" />
+
 // ink-ish — a fork of Claude Code's internal Ink fork, packaged as a
 // standalone library. Adds ScrollBox (overflow: 'scroll') support on top
 // of the standard Ink component API.

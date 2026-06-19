@@ -8,6 +8,15 @@
 // so the side-effect imports in Box.tsx and ScrollBox.tsx resolve.
 export {};
 
+// supports-hyperlinks has no published @types package either.
+declare module 'supports-hyperlinks' {
+  const supportsHyperlinks: {
+    stdout: boolean;
+    stderr: boolean;
+  };
+  export default supportsHyperlinks;
+}
+
 // stringWidth.ts and wrapAnsi.ts both opportunistically use Bun's native
 // stringWidth/wrapAnsi when running under Bun (faster than the JS
 // fallback), guarded by `typeof Bun !== 'undefined'` checks. Since
@@ -38,11 +47,26 @@ declare module 'react/compiler-runtime' {
 // React DOM. A few files construct them via raw JSX (e.g. Box.tsx renders
 // <ink-box>, Text.tsx renders <ink-text>) rather than only ever producing
 // them programmatically, so JSX needs to know these are valid intrinsics.
-// With "jsx": "react-jsx" (the new JSX transform), TypeScript looks for
-// IntrinsicElements under the global React.JSX namespace, not a bare
-// global JSX namespace — hence augmenting it this way rather than via
-// `declare global { namespace JSX { ... } }`.
+//
+// Where TypeScript looks for IntrinsicElements depends on the consuming
+// project's "jsx" tsconfig setting, not just this package's own setting:
+//   - "jsx": "react-jsx" (new transform) → global React.JSX namespace
+//   - "jsx": "react" (classic transform) → bare global JSX namespace
+// Since ink-ish is a published dependency, we can't assume which mode a
+// consumer uses (codemonkeycli itself uses classic "react", for instance),
+// so both are declared here to cover either case.
 declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'ink-root': Record<string, unknown>
+      'ink-box': Record<string, unknown>
+      'ink-text': Record<string, unknown>
+      'ink-virtual-text': Record<string, unknown>
+      'ink-link': Record<string, unknown>
+      'ink-progress': Record<string, unknown>
+      'ink-raw-ansi': Record<string, unknown>
+    }
+  }
   namespace React {
     namespace JSX {
       interface IntrinsicElements {
