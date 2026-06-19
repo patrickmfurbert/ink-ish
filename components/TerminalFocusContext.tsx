@@ -37,14 +37,14 @@ export function TerminalFocusProvider(t0: { children?: React.ReactNode }): React
     t1 = $[2] as TerminalFocusContextProps;
   }
   const value = t1;
-  let t2;
+  let t2: React.ReactNode;
   if ($[3] !== children || $[4] !== value) {
     t2 = <TerminalFocusContext.Provider value={value}>{children}</TerminalFocusContext.Provider>;
     $[3] = children;
     $[4] = value;
     $[5] = t2;
   } else {
-    t2 = $[5];
+    t2 = $[5] as React.ReactNode;
   }
   return t2;
 }

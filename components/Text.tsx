@@ -133,7 +133,7 @@ export default function Text(t0: Props): React.ReactNode {
   if (children === undefined || children === null) {
     return null;
   }
-  let t6: false | { color: typeof color };
+  let t6: { color: typeof color } | undefined | false;
   if ($[0] !== color) {
     t6 = color && {
       color
@@ -141,9 +141,9 @@ export default function Text(t0: Props): React.ReactNode {
     $[0] = color;
     $[1] = t6;
   } else {
-    t6 = $[1] as false | { color: typeof color };
+    t6 = $[1] as { color: typeof color } | undefined | false;
   }
-  let t7: false | { backgroundColor: typeof backgroundColor };
+  let t7: { backgroundColor: typeof backgroundColor } | undefined | false;
   if ($[2] !== backgroundColor) {
     t7 = backgroundColor && {
       backgroundColor
@@ -151,9 +151,9 @@ export default function Text(t0: Props): React.ReactNode {
     $[2] = backgroundColor;
     $[3] = t7;
   } else {
-    t7 = $[3] as false | { backgroundColor: typeof backgroundColor };
+    t7 = $[3] as { backgroundColor: typeof backgroundColor } | undefined | false;
   }
-  let t8: false | { dim: typeof dim };
+  let t8: { dim: typeof dim } | undefined | false;
   if ($[4] !== dim) {
     t8 = dim && {
       dim
@@ -161,9 +161,9 @@ export default function Text(t0: Props): React.ReactNode {
     $[4] = dim;
     $[5] = t8;
   } else {
-    t8 = $[5] as false | { dim: typeof dim };
+    t8 = $[5] as { dim: typeof dim } | undefined | false;
   }
-  let t9: false | { bold: typeof bold };
+  let t9: { bold: typeof bold } | undefined | false;
   if ($[6] !== bold) {
     t9 = bold && {
       bold
@@ -171,9 +171,9 @@ export default function Text(t0: Props): React.ReactNode {
     $[6] = bold;
     $[7] = t9;
   } else {
-    t9 = $[7] as false | { bold: typeof bold };
+    t9 = $[7] as { bold: typeof bold } | undefined | false;
   }
-  let t10: false | { italic: typeof italic };
+  let t10: { italic: typeof italic } | undefined | false;
   if ($[8] !== italic) {
     t10 = italic && {
       italic
@@ -181,9 +181,9 @@ export default function Text(t0: Props): React.ReactNode {
     $[8] = italic;
     $[9] = t10;
   } else {
-    t10 = $[9] as false | { italic: typeof italic };
+    t10 = $[9] as { italic: typeof italic } | undefined | false;
   }
-  let t11: false | { underline: typeof underline };
+  let t11: { underline: typeof underline } | undefined | false;
   if ($[10] !== underline) {
     t11 = underline && {
       underline
@@ -191,9 +191,9 @@ export default function Text(t0: Props): React.ReactNode {
     $[10] = underline;
     $[11] = t11;
   } else {
-    t11 = $[11] as false | { underline: typeof underline };
+    t11 = $[11] as { underline: typeof underline } | undefined | false;
   }
-  let t12: false | { strikethrough: typeof strikethrough };
+  let t12: { strikethrough: typeof strikethrough } | undefined | false;
   if ($[12] !== strikethrough) {
     t12 = strikethrough && {
       strikethrough
@@ -201,9 +201,9 @@ export default function Text(t0: Props): React.ReactNode {
     $[12] = strikethrough;
     $[13] = t12;
   } else {
-    t12 = $[13] as false | { strikethrough: typeof strikethrough };
+    t12 = $[13] as { strikethrough: typeof strikethrough } | undefined | false;
   }
-  let t13: false | { inverse: typeof inverse };
+  let t13: { inverse: typeof inverse } | undefined | false;
   if ($[14] !== inverse) {
     t13 = inverse && {
       inverse
@@ -211,7 +211,7 @@ export default function Text(t0: Props): React.ReactNode {
     $[14] = inverse;
     $[15] = t13;
   } else {
-    t13 = $[15] as false | { inverse: typeof inverse };
+    t13 = $[15] as { inverse: typeof inverse } | undefined | false;
   }
   let t14;
   if ($[16] !== t10 || $[17] !== t11 || $[18] !== t12 || $[19] !== t13 || $[20] !== t6 || $[21] !== t7 || $[22] !== t8 || $[23] !== t9) {
@@ -239,7 +239,7 @@ export default function Text(t0: Props): React.ReactNode {
   }
   const textStyles = t14;
   const t15 = memoizedStylesForWrap[wrap];
-  let t16;
+  let t16: React.ReactNode;
   if ($[25] !== children || $[26] !== t15 || $[27] !== textStyles) {
     t16 = <ink-text style={t15} textStyles={textStyles}>{children}</ink-text>;
     $[25] = children;
@@ -247,7 +247,7 @@ export default function Text(t0: Props): React.ReactNode {
     $[27] = textStyles;
     $[28] = t16;
   } else {
-    t16 = $[28];
+    t16 = $[28] as React.ReactNode;
   }
   return t16;
 }

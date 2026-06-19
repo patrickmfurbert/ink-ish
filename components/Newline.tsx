@@ -26,13 +26,13 @@ export default function Newline(t0: Props): React.ReactNode {
   } else {
     t2 = $[1];
   }
-  let t3;
+  let t3: React.ReactNode;
   if ($[2] !== t2) {
     t3 = <ink-text>{t2}</ink-text>;
     $[2] = t2;
     $[3] = t3;
   } else {
-    t3 = $[3];
+    t3 = $[3] as React.ReactNode;
   }
   return t3;
 }

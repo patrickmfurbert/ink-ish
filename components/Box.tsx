@@ -160,7 +160,7 @@ function Box(t0: Props): React.ReactNode {
     onMouseEnter = $[14];
     onMouseLeave = $[15];
     ref = $[16];
-    style = $[17];
+    style = $[17] as Styles;
     tabIndex = $[18];
   }
   const t1 = style.overflowX ?? style.overflow ?? "visible";
@@ -187,7 +187,7 @@ function Box(t0: Props): React.ReactNode {
   } else {
     t3 = $[26];
   }
-  let t4;
+  let t4: React.ReactNode;
   if ($[27] !== autoFocus || $[28] !== children || $[29] !== onBlur || $[30] !== onBlurCapture || $[31] !== onClick || $[32] !== onFocus || $[33] !== onFocusCapture || $[34] !== onKeyDown || $[35] !== onKeyDownCapture || $[36] !== onMouseEnter || $[37] !== onMouseLeave || $[38] !== ref || $[39] !== t3 || $[40] !== tabIndex) {
     t4 = <ink-box ref={ref} tabIndex={tabIndex} autoFocus={autoFocus} onClick={onClick} onFocus={onFocus} onFocusCapture={onFocusCapture} onBlur={onBlur} onBlurCapture={onBlurCapture} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onKeyDown={onKeyDown} onKeyDownCapture={onKeyDownCapture} style={t3}>{children}</ink-box>;
     $[27] = autoFocus;
@@ -206,7 +206,7 @@ function Box(t0: Props): React.ReactNode {
     $[40] = tabIndex;
     $[41] = t4;
   } else {
-    t4 = $[41];
+    t4 = $[41] as React.ReactNode;
   }
   return t4;
 }

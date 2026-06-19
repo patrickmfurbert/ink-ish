@@ -95,14 +95,14 @@ export function ClockProvider(t0: { children?: React.ReactNode }): React.ReactNo
     t2 = $[3] as unknown[];
   }
   useEffect(t1, t2);
-  let t3;
+  let t3: React.ReactNode;
   if ($[4] !== children || $[5] !== clock) {
     t3 = <ClockContext.Provider value={clock}>{children}</ClockContext.Provider>;
     $[4] = children;
     $[5] = clock;
     $[6] = t3;
   } else {
-    t3 = $[6];
+    t3 = $[6] as React.ReactNode;
   }
   return t3;
 }
