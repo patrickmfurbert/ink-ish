@@ -39,8 +39,8 @@ export function AlternateScreen(t0: Props): React.ReactNode {
   const mouseTracking = t1 === undefined ? true : t1;
   const size = useContext(TerminalSizeContext);
   const writeRaw = useContext(TerminalWriteContext);
-  let t2;
-  let t3;
+  let t2: () => (() => void) | undefined;
+  let t3: [typeof writeRaw, typeof mouseTracking];
   if ($[0] !== mouseTracking || $[1] !== writeRaw) {
     t2 = () => {
       const ink = instances.get(process.stdout);
@@ -61,19 +61,19 @@ export function AlternateScreen(t0: Props): React.ReactNode {
     $[2] = t2;
     $[3] = t3;
   } else {
-    t2 = $[2];
-    t3 = $[3];
+    t2 = $[2] as () => (() => void) | undefined;
+    t3 = $[3] as [typeof writeRaw, typeof mouseTracking];
   }
   useInsertionEffect(t2, t3);
   const t4 = size?.rows ?? 24;
-  let t5;
+  let t5: React.ReactNode;
   if ($[4] !== children || $[5] !== t4) {
     t5 = <Box flexDirection="column" height={t4} width="100%" flexShrink={0}>{children}</Box>;
     $[4] = children;
     $[5] = t4;
     $[6] = t5;
   } else {
-    t5 = $[6];
+    t5 = $[6] as React.ReactNode;
   }
   return t5;
 }
