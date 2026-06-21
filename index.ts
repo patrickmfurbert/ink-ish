@@ -30,6 +30,8 @@ export { default as Spacer } from './components/Spacer.js'
 export { default as ScrollBox } from './components/ScrollBox.js'
 export type { ScrollBoxHandle, ScrollBoxProps } from './components/ScrollBox.js'
 
+export { AlternateScreen } from './components/AlternateScreen.js'
+
 export { default as useApp } from './hooks/use-app.js'
 export { default as useInput } from './hooks/use-input.js'
 export type { Key } from './events/input-event.js'
